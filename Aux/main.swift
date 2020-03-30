@@ -1,4 +1,4 @@
 import Foundation
 
 let aux = Aux()
-print()
+print("Eviroments Directory: \(aux.core.folderURL)")
