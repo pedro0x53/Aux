@@ -3,11 +3,11 @@ import Foundation
 public class Core {
     
     var fileManager: FileManager
-    var folderURL: URL? = nil
+    var envURL: URL? = nil
     
     init() {
         self.fileManager = FileManager.default
-        self.folderURL = checkFolder()
+        self.envURL = checkFolder()
     }
     
     public func checkFolder() -> URL? {
@@ -34,10 +34,36 @@ public class Core {
     }
     
     public func createFile() {}
-    public func readFile() {}
+    public func readFile(fileName: String) -> [URL?] {
+        var appsURL: Array<URL?> = [nil]
+        if let envURL = self.envURL {
+            let fileURL = envURL.appendingPathComponent("\(fileName).txt")
+            if fileManager.fileExists(atPath: fileURL.path) {
+                do {
+                    let content = try String(contentsOf: fileURL, encoding: .utf8).split(separator: "\n")
+                    appsURL = content.map { URL(fileURLWithPath: String($0)) }
+                } catch {
+                    print("Unabe to read environment.")
+                }
+            } else {
+                print("Non-existent environment.")
+            }
+        }
+        return appsURL
+    }
     public func deleteFile() {}
     
-    public func listApps() {}
+    public func listApps() -> [URL?]{
+        var apps: Array<URL?> = [nil]
+        let appsDir = fileManager.urls(for: .applicationDirectory, in: .systemDomainMask)[0]
+        do {
+            apps = try fileManager.contentsOfDirectory(at: appsDir, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
+        } catch {
+            print("No application found.")
+        }
+        return apps
+    }
+    
     public func openApp() {}
     
 }
