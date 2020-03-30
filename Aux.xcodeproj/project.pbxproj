@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FE12092E242E892400A217AB /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE12092D242E892400A217AB /* main.swift */; };
+		FE12092E242E892400A217AB /* aux.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE12092D242E892400A217AB /* aux.swift */; };
 		FE120939242E928900A217AB /* core.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE120938242E928900A217AB /* core.swift */; };
+		FE255B7724321823006A93DC /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE255B7624321823006A93DC /* main.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,8 +26,9 @@
 
 /* Begin PBXFileReference section */
 		FE12092A242E892400A217AB /* Aux */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Aux; sourceTree = BUILT_PRODUCTS_DIR; };
-		FE12092D242E892400A217AB /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		FE12092D242E892400A217AB /* aux.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = aux.swift; sourceTree = "<group>"; };
 		FE120938242E928900A217AB /* core.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = core.swift; sourceTree = "<group>"; };
+		FE255B7624321823006A93DC /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,8 +61,9 @@
 		FE12092C242E892400A217AB /* Aux */ = {
 			isa = PBXGroup;
 			children = (
-				FE12092D242E892400A217AB /* main.swift */,
+				FE12092D242E892400A217AB /* aux.swift */,
 				FE120938242E928900A217AB /* core.swift */,
+				FE255B7624321823006A93DC /* main.swift */,
 			);
 			path = Aux;
 			sourceTree = "<group>";
@@ -123,8 +126,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE12092E242E892400A217AB /* main.swift in Sources */,
+				FE12092E242E892400A217AB /* aux.swift in Sources */,
 				FE120939242E928900A217AB /* core.swift in Sources */,
+				FE255B7724321823006A93DC /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
