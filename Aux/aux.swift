@@ -45,10 +45,25 @@ class Aux {
     }
     
     public func executeEnvironment(env: String) {
-            print("Running...")
+        let envURLs = core.readFile(fileName: env)
+        for envURL in envURLs {
+            if let url = envURL {
+                core.openApp(appURL: url)
+            }
+        }
     }
     
     public func deleteEnvironment(env: String) {
-        print("Deleting...")
+        if env == "" {
+            print("No one environmet was selected.")
+            return
+        }
+        
+        print("Are you sure about delete the \"\(env)\" environment? [y/n]", terminator: " ")
+        if let confirm = readLine() {
+            if confirm == "y" {
+                core.deleteFile(fileName: env)
+            }
+        }
     }
 }
