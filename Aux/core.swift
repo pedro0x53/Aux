@@ -10,25 +10,33 @@ public class Core {
         self.envURL = checkFolder()
     }
     
-    public func checkFolder() -> URL? {
+    public func checkFolder() -> URL {
         let docsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let envFolder = docsURL.appendingPathComponent("Envs")
-        do {
-            try fileManager.createDirectory(at: envFolder, withIntermediateDirectories: true, attributes: nil)
-        } catch {
-            return nil
+        
+        var isDirectory: ObjCBool = false
+        let folderExists = fileManager.fileExists(atPath: envFolder.path, isDirectory: &isDirectory)
+
+        if !folderExists || !isDirectory.boolValue {
+            do {
+                try fileManager.createDirectory(at: envFolder, withIntermediateDirectories: true, attributes: nil)
+            } catch {
+                print("Error: Unable to create directory.")
+            }
+        } else {
+            print("Directory already exists")
         }
     
         return envFolder
     }
     
-    public func checkFiles() -> [String?] {
-        guard let folderURL = checkFolder() else { return [nil] }
-        var filesPaths = Array<String?>()
+    public func checkFiles() -> [String] {
+        let folderURL = checkFolder()
+        var filesPaths = Array<String>()
         do {
             try filesPaths = fileManager.contentsOfDirectory(atPath: folderURL.path)
         } catch {
-            filesPaths = [nil]
+            filesPaths = [""]
         }
         return filesPaths
     }
@@ -64,6 +72,15 @@ public class Core {
         return apps
     }
     
-    public func openApp() {}
+    public func openApp(appURL: URL) {
+        let task = Process()
+        task.executableURL = URL(fileURLWithPath: "/usr/bin/open")
+        task.arguments = ["\(appURL.path)"]
+        do {
+            try task.run()
+        } catch {
+            print("Error: Failed to run \"\(appURL.lastPathComponent)\"")
+        }
+    }
     
 }
