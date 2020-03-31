@@ -41,7 +41,14 @@ public class Core {
         return filesPaths
     }
     
-    public func createFile() {}
+    public func createFile(content: String, fileName: String) {
+        let fileURL = envURL?.appendingPathComponent("\(fileName).txt")
+        do {
+            try content.write(to: fileURL!, atomically: true, encoding: String.Encoding.utf8)
+        } catch {
+           print("Failed to create this environment.")
+        }
+    }
     public func readFile(fileName: String) -> [URL?] {
         var appsURL: Array<URL?> = [nil]
         if let envURL = self.envURL {
