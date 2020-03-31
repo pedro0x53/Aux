@@ -59,7 +59,13 @@ public class Core {
         }
         return appsURL
     }
-    public func deleteFile() {}
+    public func deleteFile(fileName: String) {
+        do{
+            try fileManager.removeItem(at: (envURL?.appendingPathComponent("\(fileName).txt"))!)
+        } catch{
+            print("Failed to delete this file. It may been removed")
+        }
+    }
     
     public func listApps() -> [URL?]{
         var apps: Array<URL?> = [nil]
