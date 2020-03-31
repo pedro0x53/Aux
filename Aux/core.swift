@@ -23,8 +23,6 @@ public class Core {
             } catch {
                 print("Error: Unable to create directory.")
             }
-        } else {
-            print("Directory already exists")
         }
     
         return envFolder
@@ -49,6 +47,7 @@ public class Core {
            print("Failed to create this environment.")
         }
     }
+    
     public func readFile(fileName: String) -> [URL?] {
         var appsURL: Array<URL?> = [nil]
         if let envURL = self.envURL {
@@ -66,6 +65,7 @@ public class Core {
         }
         return appsURL
     }
+    
     public func deleteFile(fileName: String) {
         do{
             try fileManager.removeItem(at: (envURL?.appendingPathComponent("\(fileName).txt"))!)
