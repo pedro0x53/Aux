@@ -39,9 +39,9 @@ class Aux {
     public func createEnvironment(env: String) {
         core.listApps()
         
-        print("\nEnter the applications you want to select separated by space\nEx: Spotify Safari Pages\n")
+        print("\nEnter the applications you want to select separated by 2 space\nEx: Spotify  Safari  Pages\n")
         if let appList = readLine() {
-            let apps = appList.split(separator: " ")
+            let apps = appList.components(separatedBy: "  ")
             if apps.count > 0 {
                 var envApps = Array<String>()
                 for app in apps {
