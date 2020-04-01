@@ -20,6 +20,7 @@ public class Core {
         if !folderExists || !isDirectory.boolValue {
             do {
                 try fileManager.createDirectory(at: envFolder, withIntermediateDirectories: true, attributes: nil)
+                print("Environments directory was ceated successfully at /Documents/Envs/.")
             } catch {
                 print("Error: Unable to create directory.")
             }
@@ -39,13 +40,19 @@ public class Core {
         return filesPaths
     }
     
-    public func createFile(content: String, fileName: String) {
-        let fileURL = envURL?.appendingPathComponent("\(fileName).txt")
-        do {
-            try content.write(to: fileURL!, atomically: true, encoding: String.Encoding.utf8)
-        } catch {
-           print("Failed to create this environment.")
+    public func createFile(content: [String], fileName: String) {
+        if let envURL = self.envURL {
+            let fileURL = envURL.appendingPathComponent("\(fileName).txt")
+            let content = content.joined(separator: "\n")
+            do {
+                print("Trying to create \(fileName) environment.")
+                try content.write(to: fileURL, atomically: true, encoding: String.Encoding.utf8)
+                print("The \(fileName) was created successfully.")
+            } catch {
+                print("Eror: Failed to create this environment.")
+            }
         }
+        return
     }
     
     public func readFile(fileName: String) -> [URL?] {
@@ -57,10 +64,10 @@ public class Core {
                     let content = try String(contentsOf: fileURL, encoding: .utf8).split(separator: "\n")
                     appsURL = content.map { URL(fileURLWithPath: String($0)) }
                 } catch {
-                    print("Unabe to read environment.")
+                    print("Error: Unabe to read environment.\n")
                 }
             } else {
-                print("Non-existent environment.")
+                print("Error: Non-existent environment.\n")
             }
         }
         return appsURL
@@ -69,20 +76,23 @@ public class Core {
     public func deleteFile(fileName: String) {
         do{
             try fileManager.removeItem(at: (envURL?.appendingPathComponent("\(fileName).txt"))!)
+            print("The \(fileName) environment was deleted successfully.\n")
         } catch{
-            print("Failed to delete this file. It may been removed")
+            print("Failed to delete this file. It may been removed.\n")
         }
+        return
     }
     
-    public func listApps() -> [URL?]{
-        var apps: Array<URL?> = [nil]
-        let appsDir = fileManager.urls(for: .applicationDirectory, in: .systemDomainMask)[0]
+    public func listApps() {        
+        let task = Process()
+        task.executableURL = URL(fileURLWithPath: "/bin/ls")
+        task.arguments = ["/Applications/"]
         do {
-            apps = try fileManager.contentsOfDirectory(at: appsDir, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
+            try task.run()
         } catch {
-            print("No application found.")
+            print("Unuable to show applications.\n")
         }
-        return apps
+        return
     }
     
     public func openApp(appURL: URL) {
@@ -90,10 +100,13 @@ public class Core {
         task.executableURL = URL(fileURLWithPath: "/usr/bin/open")
         task.arguments = ["\(appURL.path)"]
         do {
+            print("Trying to run \(appURL.lastPathComponent)")
             try task.run()
+            print("Running \(appURL.lastPathComponent)")
         } catch {
-            print("Error: Failed to run \"\(appURL.lastPathComponent)\"")
+            print("Error: Failed to run \"\(appURL.lastPathComponent)\"\n")
         }
+        return
     }
     
 }
