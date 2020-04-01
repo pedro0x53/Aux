@@ -10,6 +10,7 @@ class Aux {
     public func input() {
         while let req = readLine() {
             process(arg: req)
+            print("\n")
         }
     }
     
@@ -33,15 +34,35 @@ class Aux {
         default:
             print("Error: Command not recognized by the system.")
         }
-        
     }
     
     public func createEnvironment(env: String) {
-        print("Creating...")
+        core.listApps()
+        
+        print("\nEnter the applications you want to select separated by space\nEx: Spotify Safari Pages\n")
+        if let appList = readLine() {
+            let apps = appList.split(separator: " ")
+            if apps.count > 0 {
+                var envApps = Array<String>()
+                for app in apps {
+                    envApps.append("/Applications/\(app).app")
+                }
+                core.createFile(content: envApps, fileName: env)
+            }
+        }
+        return
     }
     
     public func listEnvironment() {
-        print("Listing...")
+        let envs = core.checkFiles()
+        if envs.count > 0 {
+            for env in envs {
+                print(env[env.startIndex..<(env.firstIndex(of: ".") ?? env.endIndex)], terminator: "\t")
+            }
+        } else {
+            print("No enviroments was found.")
+        }
+        return
     }
     
     public func executeEnvironment(env: String) {
@@ -51,6 +72,7 @@ class Aux {
                 core.openApp(appURL: url)
             }
         }
+        return
     }
     
     public func deleteEnvironment(env: String) {
@@ -65,5 +87,6 @@ class Aux {
                 core.deleteFile(fileName: env)
             }
         }
+        return
     }
 }
