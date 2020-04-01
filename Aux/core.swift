@@ -89,10 +89,10 @@ public class Core {
         task.arguments = ["/Applications/"]
         do {
             try task.run()
+            task.waitUntilExit()
         } catch {
-            print("Unuable to show applications.\n")
+            print("Unable to show applications.\n")
         }
-        return
     }
     
     public func openApp(appURL: URL) {
@@ -106,7 +106,7 @@ public class Core {
         } catch {
             print("Error: Failed to run \"\(appURL.lastPathComponent)\"\n")
         }
-        return
+        task.waitUntilExit()
     }
     
 }
