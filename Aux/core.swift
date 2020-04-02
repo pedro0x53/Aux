@@ -33,7 +33,13 @@ public class Core {
         let folderURL = checkFolder()
         var filesPaths = Array<String>()
         do {
-            try filesPaths = fileManager.contentsOfDirectory(atPath: folderURL.path)
+            let filesURL = try fileManager.contentsOfDirectory(at: folderURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
+            if filesURL.count > 0 {
+                for url in filesURL {
+                    filesPaths.append(url.lastPathComponent)
+                }
+            }
+            
         } catch {
             filesPaths = [""]
         }
