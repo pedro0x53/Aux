@@ -15,31 +15,43 @@ $ ./aux
 
 ### Comandos
 
-- **list**: Exibe todos os ambientes criados.
+- **list**: Exibe todos os ambientes criados e seu respectivos apps.
 ```sh
-$ list
-mesa1 mesa2
+Aux $ list
+Environment: env1
+Apps: 
+	Spotify
+	Firefox
+	Sublime Text
+
+
+
+Environment: env2
+Apps: 
+	Notes
+	Calculator
 ```
 
 * **create**: Cria um novo ambiante.
 ```sh
-$ create mesa1
-Pages.app     Dropbox.app   Safari.app		
-Firefox.app   iMovie.app    Xcode.app
-Keynote.app   Spotify.app   Numbers.app
+Aux $ create env1
+Pages     Dropbox   Safari
+Firefox   iMovie    Xcode
+Keynote   Spotify   Numbers
+
 
 Enter the applications you want to select separated by 2 space
 Ex: Spotify  Safari  Pages
 
-$ Keynote  Pages  Safari
-Trying to create mesa1 environment.
-The mesa1 was created successfully.
+Aux $ Keynote  Pages  Safari
+Trying to create env1 environment.
+The env1 was created successfully.
 ```
 Obs: entre cada app é necessário 2 espaços.
 
 * **run**: Executa um ambiente.
 ```sh
-$ run mesa1
+Aux $ run env1
 Trying to run Keynote.app
 Running Keynote.app
 Trying to run Pages.app
@@ -52,15 +64,31 @@ Running Safari.app
 
 * **delete**: Exclui um ambiente.
 ```sh
-$ delete mesa1
-$ Are you sure about delete the "mesa1" environment? [y/n] y
-The mesa1 environment was deleted successfully.
+Aux $ delete env1
+$ Are you sure about delete the "env1" environment? [y/n] y
+The env1 environment was deleted successfully.
 ```
 
 
 * **exit**: Finaliza a aplicação.
 ```sh
-$ exit
+Aux $ exit
 Program ended with exit code: 0
+```
+
+* **help**: Exibe comandos válidos do sistema.
+```sh
+Aux $ help
+
+COMMANDS
+
+list: Displays all created environments.
+create _envName_: Try to crete a new environment.
+run _envName_: Try to run an evironment.
+delete _envName_: Delete an environment.
+exit: Terminate the application.
+help: Displays valid commands.
+
+You must replace _envName_ with the name of the environment.
 ```
 
