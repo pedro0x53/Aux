@@ -81,7 +81,19 @@ class Aux {
         let envs = core.checkFiles()
         if envs.count > 0 {
             for env in envs {
-                print(env[env.startIndex..<(env.firstIndex(of: ".") ?? env.endIndex)], terminator: "\t")
+                let envName = env.lastPathComponent[..<(env.lastPathComponent.lastIndex(of: ".") ?? env.lastPathComponent.endIndex)]
+                print("Environment: \(envName)")
+                let contents = core.readFile(fileName: String(envName))
+                if contents.count > 0 {
+                    print("Apps: ")
+                    for content in contents {
+                        if let appURL = content {
+                            let app = appURL.lastPathComponent
+                            print("\t\(app[..<(app.lastIndex(of: ".") ?? app.endIndex)])")
+                        }
+                    }
+                }
+                print("\n\n")
             }
         } else {
             print("No enviroments was found.")
