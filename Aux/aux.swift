@@ -8,18 +8,20 @@ class Aux {
     }
     
     public func input() {
-        while let req = readLine() {
-            process(arg: req)
-            print("\n")
+        while true{
+            print("Aux $", terminator: " ")
+            if let req = readLine(), !req.isEmpty {
+                process(arg: req)
+                print("\n")
+            }
         }
     }
     
-    public func process(arg: String = "") {
+    public func process(arg: String) {
         var args = arg.split(separator: " ")
         let cmd = args[0]
         args.remove(at: 0)
         let content = args.joined(separator: " ")
-        
         switch cmd {
         case "list":
             listEnvironment()
@@ -29,6 +31,8 @@ class Aux {
             executeEnvironment(env: content)
         case "delete":
             deleteEnvironment(env: content)
+        case "help":
+            help()
         case "exit":
             exit(0)
         default:
@@ -36,16 +40,36 @@ class Aux {
         }
     }
     
+    public func help() {
+        print("\nCOMMANDS\n\nlist: Displays all created environments.\ncreate _envName_: Try to crete a new environment.\nrun _envName_: Try to run an evironment.\ndelete _envName_: Delete an environment.\nexit: Terminate the application.\nhelp: Displays valid commands.\n\nYou must replace _envName_ with the name of the environment.\n\n")
+    }
+    
     public func createEnvironment(env: String) {
-        core.listApps()
+        let installedApps = core.listApps()
         
-        print("\nEnter the applications you want to select separated by 2 space\nEx: Spotify  Safari  Pages\n")
+        var count = 0
+        for app in installedApps {
+            let appName = app.lastPathComponent
+            let dotIndex = appName.lastIndex(of: ".") ?? appName.endIndex
+            print(appName[..<dotIndex], terminator: "\t")
+            count += 1
+            if count == 6 {
+                print("\n")
+                count = 0
+            }
+        }
+        
+        print("\n\n\n\nEnter the applications you want to select separated by 2 space\nEx: Spotify  Safari  Pages\n\n")
+        print("Aux $", terminator: " ")
         if let appList = readLine() {
-            let apps = appList.components(separatedBy: "  ")
-            if apps.count > 0 {
+            var chosenApps = appList.components(separatedBy: "  ")
+            if chosenApps.count > 0 {
+                chosenApps = chosenApps.map { return $0 + ".app" }
                 var envApps = Array<String>()
-                for app in apps {
-                    envApps.append("/Applications/\(app).app")
+                for installedApp in installedApps {
+                    if chosenApps.contains(installedApp.lastPathComponent) {
+                        envApps.append(installedApp.path)
+                    }
                 }
                 core.createFile(content: envApps, fileName: env)
             }
@@ -76,12 +100,13 @@ class Aux {
     }
     
     public func deleteEnvironment(env: String) {
-        if env == "" {
+        if env.isEmpty || env == "" {
             print("No one environmet was selected.")
             return
         }
         
         print("Are you sure about delete the \"\(env)\" environment? [y/n]", terminator: " ")
+        print("Aux $", terminator: " ")
         if let confirm = readLine() {
             if confirm == "y" {
                 core.deleteFile(fileName: env)
