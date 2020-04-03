@@ -105,13 +105,21 @@ class Aux {
             return
         }
         
-        print("Are you sure about delete the \"\(env)\" environment? [y/n]", terminator: " ")
-        print("Aux $", terminator: " ")
-        if let confirm = readLine() {
-            if confirm == "y" {
-                core.deleteFile(fileName: env)
+        print("Are you sure about delete the \"\(env)\" environment? [y/n]: ", terminator: " ")
+        while true {
+            if let confirm = readLine() {
+                print("Aux $", terminator: " ")
+                switch confirm {
+                case "y":
+                        core.deleteFile(fileName: env)
+                        return
+                case "n":
+                        print("Deletion canceled.")
+                        return
+                default:
+                    print("Invalid command. [y/n]: ", terminator: " ")
+                }
             }
         }
-        return
     }
 }
