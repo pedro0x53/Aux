@@ -29,19 +29,19 @@ public class Core {
         return envFolder
     }
     
-    public func checkFiles() -> [String] {
+    public func checkFiles() -> [URL] {
         let folderURL = checkFolder()
-        var filesPaths = Array<String>()
+        var filesPaths = Array<URL>()
         do {
             let filesURL = try fileManager.contentsOfDirectory(at: folderURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
             if filesURL.count > 0 {
                 for url in filesURL {
-                    filesPaths.append(url.lastPathComponent)
+                    filesPaths.append(url)
                 }
             }
             
         } catch {
-            filesPaths = [""]
+            filesPaths = []
         }
         return filesPaths
     }
