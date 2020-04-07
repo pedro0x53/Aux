@@ -29,19 +29,19 @@ public class Core {
         return envFolder
     }
     
-    public func checkFiles() -> [String] {
+    public func checkFiles() -> [URL] {
         let folderURL = checkFolder()
-        var filesPaths = Array<String>()
+        var filesPaths = Array<URL>()
         do {
             let filesURL = try fileManager.contentsOfDirectory(at: folderURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
             if filesURL.count > 0 {
                 for url in filesURL {
-                    filesPaths.append(url.lastPathComponent)
+                    filesPaths.append(url)
                 }
             }
             
         } catch {
-            filesPaths = [""]
+            filesPaths = []
         }
         return filesPaths
     }
@@ -89,16 +89,28 @@ public class Core {
         return
     }
     
-    public func listApps() {        
-        let task = Process()
-        task.executableURL = URL(fileURLWithPath: "/bin/ls")
-        task.arguments = ["/Applications/"]
+    public func listApps() -> [URL] {
+        let systemAppsURL = fileManager.urls(for: .applicationDirectory, in: .systemDomainMask)[0]
+        let userAppsURL = URL(fileURLWithPath: "/Applications/")
+        var systemApps = Array<URL>()
+        var userApps = Array<URL>()
+        var installedApps = Array<URL>()
+        
         do {
-            try task.run()
-            task.waitUntilExit()
+            systemApps = try fileManager.contentsOfDirectory(at: systemAppsURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
         } catch {
-            print("Unable to show applications.\n")
+            print("Unable to get System installed apps.")
         }
+        
+        do {
+            userApps = try fileManager.contentsOfDirectory(at: userAppsURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
+        } catch {
+            print("Unable to get User installed apps.")
+        }
+        
+        installedApps = userApps + systemApps
+        
+        return installedApps
     }
     
     public func openApp(appURL: URL) {
@@ -114,5 +126,4 @@ public class Core {
         }
         task.waitUntilExit()
     }
-    
 }
